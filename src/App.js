@@ -1,9 +1,12 @@
 import "./App.css";
+import Counters from "./components/counters";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <main className="containe">
-      <h1>helllo world</h1>
+    <main className="container">
+      <NavBar />
+      <Counters />
     </main>
   );
 }
