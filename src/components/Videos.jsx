@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { deleteMovie, getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
+import Like from "./common/Like";
+import Pagination from "./common/Pagination";
 
 export class Videos extends Component {
   state = {
     movies: getMovies(),
+    pagesSize: 4,
+    currentPage: 1,
   };
   getGenre(movie) {
     const genre = getGenres().find((g) => g._id === movie.genre._id);
@@ -20,7 +24,23 @@ export class Videos extends Component {
   //     // deleteMovie(id);
   //     // this.setState({ movies: getMovies() });
   //   };
+
+  handleLike = (movie) => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = { ...movie };
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
   render() {
+    const { length: count } = this.state.movies;
+    const { pagesSize, currentPage } = this.state;
+
     return (
       <>
         {this.state.movies.length === 0 ? (
@@ -36,6 +56,7 @@ export class Videos extends Component {
                   <th scope="col">Stock</th>
                   <th scope="col">Rate</th>
                   <th scope="col"></th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -45,6 +66,12 @@ export class Videos extends Component {
                     <td>{this.getGenre(movie)}</td>
                     <td>{movie.numberInStock}</td>
                     <td>{movie.dailyRentalRate}</td>
+                    <td>
+                      <Like
+                        liked={movie.liked}
+                        onClick={() => this.handleLike(movie)}
+                      />
+                    </td>
                     <td>
                       <button
                         onClick={() => this.handleDelete(movie)}
@@ -58,6 +85,12 @@ export class Videos extends Component {
                 ))}
               </tbody>
             </table>
+            <Pagination
+              itemsCount={count}
+              pagesSize={pagesSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
           </>
         )}
       </>
