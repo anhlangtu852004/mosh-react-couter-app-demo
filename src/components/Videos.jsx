@@ -3,6 +3,7 @@ import { deleteMovie, getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 import Like from "./common/Like";
 import Pagination from "./common/Pagination";
+import pagination from "./utils/pagination";
 
 export class Videos extends Component {
   state = {
@@ -39,8 +40,9 @@ export class Videos extends Component {
 
   render() {
     const { length: count } = this.state.movies;
-    const { pagesSize, currentPage } = this.state;
-
+    const { pagesSize, currentPage, movies: allMovies } = this.state;
+    const movies = pagination(allMovies, currentPage, pagesSize);
+    console.log(movies);
     return (
       <>
         {this.state.movies.length === 0 ? (
@@ -60,7 +62,7 @@ export class Videos extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.movies.map((movie) => (
+                {movies.map((movie) => (
                   <tr key={movie._id}>
                     <td>{movie.title}</td>
                     <td>{this.getGenre(movie)}</td>
