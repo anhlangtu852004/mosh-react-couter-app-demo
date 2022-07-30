@@ -1,7 +1,6 @@
 import React from "react";
 import Like from "./common/Like";
-import TableBody from "./common/TableBody";
-import TableHeader from "./common/TableHeader";
+import Table from "./common/table";
 
 const MoviesTable = (props) => {
   const { movies, onLike, onDelete, onSort, sortColumn } = props;
@@ -20,32 +19,20 @@ const MoviesTable = (props) => {
     {
       key: "delete",
       content: (movie) => (
-        <button
-          onClick={() => onDelete(movie)}
-          // onClick={() => this.handleDelete(movie._id)}
-          className="btn btn-danger"
-        >
+        <button onClick={() => onDelete(movie)} className="btn btn-danger">
           Delete
         </button>
       ),
     },
   ];
-  // const raiseSort = (path) => {
-  //   const sortColumn = { ...sortColumnMovie };
-  //   if (sortColumn.path === path)
-  //     sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-  //   else {
-  //     sortColumn.path = path;
-  //     sortColumn.order = "asc";
-  //   }
-  //   onSort(sortColumn);
-  // };
 
   return (
-    <table className="table">
-      <TableHeader columns={columns} onSort={onSort} sortColumn={sortColumn} />
-      <TableBody data={movies} columns={columns} />
-    </table>
+    <Table
+      columns={columns}
+      onSort={onSort}
+      sortColumn={sortColumn}
+      data={movies}
+    />
   );
 };
 

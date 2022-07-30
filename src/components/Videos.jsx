@@ -58,6 +58,25 @@ export class Videos extends Component {
     this.setState({ sortColumn });
   };
 
+  getPageData = () => {
+    const {
+      pagesSize,
+      currentPage,
+      movies: allMovies,
+      selectedGenre,
+      sortColumn,
+    } = this.state;
+
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+        : allMovies;
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const movies = pagination(sorted, currentPage, pagesSize);
+    return { totalCount: filtered.length, data: movies };
+  };
+
   render() {
     const { length: count } = this.state.movies;
     const {
@@ -67,13 +86,8 @@ export class Videos extends Component {
       selectedGenre,
       sortColumn,
     } = this.state;
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
-        : allMovies;
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
-    const movies = pagination(sorted, currentPage, pagesSize);
+    const { totalCount, data: movies } = this.getPageData();
 
     return (
       <div className="row">
@@ -89,7 +103,7 @@ export class Videos extends Component {
             <p>there are no movies in database </p>
           ) : (
             <>
-              <p>showing {filtered.length} movies in the database</p>
+              <p>showing {totalCount} movies in the database</p>
               <MoviesTable
                 onDelete={this.handleDelete}
                 onLike={this.handleLike}
@@ -99,7 +113,7 @@ export class Videos extends Component {
               />
 
               <Pagination
-                itemsCount={filtered.length}
+                itemsCount={totalCount}
                 pagesSize={pagesSize}
                 currentPage={currentPage}
                 onPageChange={this.handlePageChange}
