@@ -31,10 +31,11 @@ function App() {
           {/* <Route path="/posts/:year/:month?" element={<PostDetail />} /> */}
           <Route path="posts" element={<Posts />}>
             <Route path=":year/:month" element={<PostDetail />} />
-            <Route path=":year/" element={<PostDetail />} />
+            <Route path=":year" element={<PostDetail />} />
           </Route>
           <Route path="/admin" element={<Admin />} />
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     </main>

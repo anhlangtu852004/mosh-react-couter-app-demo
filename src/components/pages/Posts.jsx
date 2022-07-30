@@ -1,12 +1,13 @@
 import React, { Children } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 
 const Posts = () => {
   const { year, month } = useParams();
   return (
-    <div>
-      Year: {year}, Month: {month}
-    </div>
+    <>
+      <div>post page</div>
+      <Outlet />
+    </>
   );
 };
 
