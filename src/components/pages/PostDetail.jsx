@@ -1,13 +1,29 @@
 import React from "react";
-import { Routes, Route, useParams, Outlet, useHref } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useParams,
+  Outlet,
+  useSearchParams,
+  Navigate,
+} from "react-router-dom";
 
 const PostDetail = () => {
   let { year, month } = useParams();
-  // let { href } = useHref();
+  const [useSearch, setUseSearch] = useSearchParams();
 
+  // cach lay tat ca querry search
+  // console.log([...useSearch]);
+  // console.log(Object.fromEntries([...useSearch]));
+
+  const sortBy = useSearch.get("sortBy");
+  const value = useSearch.get("value");
+
+  console.log("sortBy", sortBy);
+  console.log("value", value);
   console.log(year);
   console.log(month);
-  // console.log(href);
+
   return (
     <div>
       <h1>

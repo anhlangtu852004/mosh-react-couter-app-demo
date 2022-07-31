@@ -1,9 +1,10 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Counters from "./components/counters";
 import NavBar from "./components/NavBar";
 import Videos from "./components/Videos";
+import NotFound from "./components/NotFound";
 import NavbarMosh from "./components/NavbarMosh";
 import Home from "./components/pages/Home";
 import Products from "./components/pages/Products";
@@ -33,9 +34,13 @@ function App() {
             <Route path=":year/:month" element={<PostDetail />} />
             <Route path=":year" element={<PostDetail />} />
           </Route>
-          <Route path="/admin" element={<Admin />} />
+          <Route path="admin" element={<Admin />} />
+          <Route path="not-found" element={<NotFound />} />
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<Home />} />
+          <Route
+            path="*"
+            element={<Navigate to="not-found" replace={true} />}
+          />
         </Routes>
       </div>
     </main>
