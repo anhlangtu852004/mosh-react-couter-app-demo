@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 const TableBody = (props) => {
@@ -17,7 +18,10 @@ const TableBody = (props) => {
       {data.map((item) => (
         <tr key={item._id}>
           {columns.map((column) => (
-            <td key={createKey(item, column)}>{renderCell(item, column)}</td>
+            <td key={createKey(item, column)}>
+              <Link to={`/movies/${item._id}`} />
+              {renderCell(item, column)}
+            </td>
           ))}
         </tr>
       ))}
