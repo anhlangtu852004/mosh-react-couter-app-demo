@@ -2,89 +2,44 @@
 
 // import PropTypes from 'prop-types'
 import React, { Component } from "react";
-import Input from "./common/Input";
+import Form from "./common/Form";
 
-export class LoginForm extends Component {
+const Joi = require("joi");
+
+export class LoginForm extends Form {
   state = {
-    account: {
+    data: {
       username: "",
       password: "",
     },
     errors: {},
   };
 
-  validate = () => {
-    const errors = {};
-    const { account } = this.state;
-
-    if (account.username.trim() === "")
-      errors.username = "Username is required...~";
-    if (account.password.trim() === "")
-      errors.password = "Password is required...~";
-
-    return Object.keys(errors).length === 0 ? null : errors;
+  // schema = Joi.object({
+  //   username: Joi.string().required().label("Username"),
+  //   password: Joi.string().required().label("Password"),
+  // });
+  schema = {
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().label("Password"),
   };
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
 
-    if (errors) return;
+  doSubmit() {
     console.log("submitted");
-  };
-
-  validateProperty = (input) => {
-    if (input.name === "username") {
-      if (input.value.trim() === "") return "Username is require";
-    }
-    if (input.name === "password") {
-      if (input.value.trim() === "") return "Password is require";
-    }
-  };
-
-  handleChange = ({ currentTarget: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
-
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({
-      account,
-      errors,
-    });
-  };
+  }
 
   render() {
-    const { account, errors } = this.state;
     return (
       <div>
         <h2>Login</h2>
         <form action="" onSubmit={this.handleSubmit}>
-          {/* name, label, value, onChange */}
-          <Input
-            name="username"
-            label="Username"
-            value={account.username}
-            onChange={this.handleChange}
-            error={errors.username}
-          />
-          <Input
-            name="password"
-            label="Password"
-            value={account.password}
-            onChange={this.handleChange}
-            error={errors.password}
-          />
+          {this.renderInput("username", "Username")}
+          {this.renderInput("password", "Password", "password")}
 
-          <button className="btn btn-primary" type="submit">
-            Login
-          </button>
+          {this.renderButton("login")}
         </form>
       </div>
     );
   }
 }
-
 export default LoginForm;
