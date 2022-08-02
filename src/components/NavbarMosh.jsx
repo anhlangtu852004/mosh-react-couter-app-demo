@@ -31,6 +31,16 @@ const NavbarMosh = () => {
                 Login
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="register">
+                Register
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="posts">
+                Posts
+              </NavLink>
+            </li>
           </ul>
         </div>
       </nav>

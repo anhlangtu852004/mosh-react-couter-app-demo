@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import _, { get } from "lodash";
 
 import ListGroup from "./common/listGroup";
@@ -7,6 +8,7 @@ import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./MoviesTable";
 import Pagination from "./common/Pagination";
 import pagination from "./utils/pagination";
+
 import listGroup from "./common/listGroup";
 
 export class Videos extends Component {
@@ -104,6 +106,15 @@ export class Videos extends Component {
           ) : (
             <>
               <p>showing {totalCount} movies in the database</p>
+              <button className="btn btn-primary">
+                <Link
+                  to="new"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
+                  {" "}
+                  Make new Movie
+                </Link>
+              </button>
               <MoviesTable
                 onDelete={this.handleDelete}
                 onLike={this.handleLike}

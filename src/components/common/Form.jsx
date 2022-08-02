@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./Input";
+import InputSelect from "./InputSelect";
 const Joi = require("joi");
 
 export class Form extends Component {
@@ -58,7 +59,7 @@ export class Form extends Component {
         disabled={this.validate()}
         type="submit"
       >
-        label
+        {label}
       </button>
     );
   }
@@ -70,6 +71,18 @@ export class Form extends Component {
         name={name}
         label={label}
         value={data[name]}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+  renderInputSelect(name, label, data) {
+    const { errors } = this.state;
+    return (
+      <InputSelect
+        name={name}
+        label={label}
+        data={data}
         onChange={this.handleChange}
         error={errors[name]}
       />
