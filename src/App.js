@@ -1,5 +1,7 @@
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 import Videos from "./components/Videos";
 import VideoDetail from "./components/VideoDetail";
@@ -17,6 +19,7 @@ function App() {
   return (
     <main className="container">
       <NavbarMosh />
+      <ToastContainer />
       <Routes>
         <Route path="posts" element={<PostsPage />} />
         <Route path="login" element={<LoginForm />} />

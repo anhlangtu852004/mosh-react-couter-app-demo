@@ -1,23 +1,47 @@
 import React, { Component } from "react";
-import axios from "axios";
-
-const apiEndpoint = "https://jsonplaceholder.typicode.com/posts";
+import http from "../services/httpServices";
+import config from "../../config.json";
 
 export default class PostsPage extends Component {
   state = {
     posts: [],
   };
   async componentDidMount() {
-    const { data: posts } = await axios.get(apiEndpoint);
+    const { data: posts } = await http.get(config.apiEndpoint);
 
     this.setState({ posts });
   }
   handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await axios.post(apiEndpoint, obj);
+    const { data: post } = await http.post(config.apiEndpoint, obj);
 
     const posts = [post, ...this.state.posts];
     this.setState({ posts });
+  };
+
+  handleUpdate = async (post) => {
+    post.title = "UPDATE";
+    await http.put(config.apiEndpoint + "/" + post.id, post);
+
+    const posts = [...this.state.posts];
+    const index = posts.indexOf(post);
+    posts[index] = { ...post };
+    this.setState({ posts });
+  };
+
+  handleDelete = async (post) => {
+    const originalPosts = this.state.posts;
+    let posts = this.state.posts.filter((p) => p.id !== post.id);
+    this.setState({ posts });
+
+    try {
+      await http.delete("s" + config.apiEndpoint + "/" + post.id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        alert("this post has already been deleted");
+
+      this.setState({ posts: originalPosts });
+    }
   };
 
   render() {
@@ -39,12 +63,20 @@ export default class PostsPage extends Component {
               <tr key={posts.id}>
                 <td>{posts.title}</td>
                 <td>
-                  <button className="btn btn-primary" onClick={this.handleAdd}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.handleUpdate(posts)}
+                  >
                     update
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-danger">Delete</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => this.handleDelete(posts)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
